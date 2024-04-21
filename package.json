@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "test": "git repository: http://github.com/heyyzimo/kanbas-node-server-app",
-    "start": "node App.js"
+    "start": "node App.js",
+    "build": "CI=false react-scripts build"
   },
   "repository": {
     "type": "git",
