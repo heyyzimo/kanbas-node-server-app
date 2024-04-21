@@ -15,6 +15,3 @@ Hello(app);
 Lab5(app);  // Initialize Lab5 routes
 
 app.listen(process.env.PORT || 4000);
-
-
-  

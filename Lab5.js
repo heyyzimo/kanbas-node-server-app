@@ -1,6 +1,7 @@
 import express from 'express';
 
 const todos = [
+  { id: 0, title: "Task 1", completed: false },
   { id: 1, title: "Task 1", completed: false },
   { id: 2, title: "Task 2", completed: true },
   { id: 3, title: "Task 3", completed: false },
@@ -25,6 +26,23 @@ const moduleObj = {
 
 
 const Lab5 = (app) => {
+  app.post("/a5/todos", (req, res) => {
+    const newTodo = {
+      ...req.body,
+      id: new Date().getTime(),
+    };
+    todos.push(newTodo);
+    res.json(newTodo);
+  });
+  app.get("/a5/todos/create", (req, res) => {
+    const newTodo = {
+      id: new Date().getTime(),
+      title: "New Task", completed: false,
+    };
+    todos.push(newTodo);
+    res.json(todos);
+  });
+
   app.get("/a5/todos", (req, res) => {
     const { completed } = req.query;
     if (completed !== undefined) {
@@ -42,6 +60,42 @@ const Lab5 = (app) => {
     const todo = todos.find((t) => t.id === parseInt(id));
     todo.title = title;
     res.json(todos);
+  });
+  app.delete("/a5/todos/:id", (req, res) => {
+    const { id } = req.params;
+    console.log(todos);
+    const todo = todos.find((t) => t.id === parseInt(id));
+  
+    if (!todo) {
+      res.status(404)
+        .json({ message: `Unable to delete Todo with ID ${id}` });
+      return;
+    }
+
+    todos.splice(todos.indexOf(todo), 1);
+    res.sendStatus(200);
+  });
+  app.get("/a5/todos/:id/delete", (req, res) => {
+    const { id } = req.params;
+    const todo = todos.find((t) => t.id === parseInt(id));
+    todos.splice(todos.indexOf(todo), 1);
+    res.json(todos);
+  });
+
+  app.put("/a5/todos/:id", (req, res) => {
+    const { id } = req.params;
+    const todo = todos.find((t) => t.id === parseInt(id));
+    if (!todo) {
+      res.status(404)
+        .json({ message: `Unable to update Todo with ID ${id}` });
+      return;
+    }
+
+    todo.title = req.body.title;
+    todo.description = req.body.description;
+    todo.due = req.body.due;
+    todo.completed = req.body.completed;
+    res.sendStatus(200);
   });
 
   app.patch("/a5/todos/:id/completed/:completed", (req, res) => {
