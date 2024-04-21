@@ -52,15 +52,16 @@ const Lab5 = (app) => {
       res.json(completedTodos);
       return;
     }
-
     res.json(todos);
   });
+
   app.get("/a5/todos/:id/title/:title", (req, res) => {
     const { id, title } = req.params;
     const todo = todos.find((t) => t.id === parseInt(id));
     todo.title = title;
     res.json(todos);
   });
+
   app.delete("/a5/todos/:id", (req, res) => {
     const { id } = req.params;
     console.log(todos);
@@ -75,6 +76,7 @@ const Lab5 = (app) => {
     todos.splice(todos.indexOf(todo), 1);
     res.sendStatus(200);
   });
+  
   app.get("/a5/todos/:id/delete", (req, res) => {
     const { id } = req.params;
     const todo = todos.find((t) => t.id === parseInt(id));
